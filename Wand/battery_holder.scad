@@ -13,7 +13,7 @@ wand_middle_diameter=20;
 wand_top_diameter=10;
 
 // Height of the lower portion
-wand_lower_height=125;
+wand_lower_height=140;
 // Height of the upper portion
 wand_upper_height=125;
 
@@ -61,6 +61,15 @@ module trapezoid(bottom, top, height, length) {
         }
 }
 
+module prism(l, w, h){
+    polyhedron(
+            points=[[0,0,0], [l,0,0], [l,w,0], [0,w,0], [0,w,h], [l,w,h]],
+            faces=[[0,1,2,3],[5,4,3,2],[0,4,5,1],[0,3,4],[5,2,1]]
+            );
+    
+
+}
+
 // shape of the battery holder to cut out
 module battery_holder() {
     trapezoid_bottom_width=12.75;
@@ -97,39 +106,37 @@ module wand_handle() {
     // main shell with cutouts for components
     difference() {
         cylinder(r1=wand_lower_diameter/2, r2=wand_middle_diameter/2, h=wand_lower_height, $fn=roundness);
-
-        // channel for the wires from the holder to switch
-        // translate([-5.5,2.5,holder_length-2]) cube([2,4,8]);
-        // translate([-6,-(switch_width+2)/2,holder_length]) cube([5,switch_width+2,20]);
-        
+       
         // cut out cavities for the components
         translate([-holder_height/2+1.5,-holder_width/2,2]) 
             rotate([0,90,0]) 
             scale([1.02,1.1,1.1])
             battery_holder();
         
-        translate([-6,-(switch_width+2)/2,holder_length]) cube([12,switch_width+2,15]);
-
         // switch + support structure
-        translate([4.1,-4,holder_length+13.6]) rotate([90,0,90]) battery_switch();
+        translate([4.1,-4,holder_length+29]) 
+            rotate([90,0,90]) 
+            battery_switch();
 
         // channel under the battery holder for wires
-        translate([-7.5,-holder_width/2,2]) {
+        translate([-7,-holder_width/2,2]) {
             cube([10,holder_width,10]);
             cube([10,5,holder_length+5]);
         }
 
-        // bore a hole for the wire to the upper wand portion
-        // translate([0,0,wand_lower_height-20])
-        // cylinder(h=40,r=wand_middle_diameter/4,$fn=roundness);
+        // tunnel for wire from button to upper section
+        translate([4,0,wand_lower_height-7]) 
+            rotate(a=[0,-15,0]) 
+            cylinder(h=10,r=3, $fn=roundness);        
 
-        translate([8,0,wand_lower_height-15]) 
-        rotate(a=[0,-15,0]) cylinder(h=40,r=3, $fn=roundness);        
+        // lower the shelf below the switch
+        translate([4,-4.5,holder_length+2]) cube([2,switch_width+1,40]); 
 
-        translate([4,-3.5   ,holder_length+3.7]) cube([5,7,12]);
+        // ramp from the battery holder to the button
+        translate([-5,(switch_width+1)/2,holder_length+2])
+            rotate([0,0,-90])
+            prism(switch_width+1,10,27);
 
-        // debug value -- cut it down the side to see inside
-        // translate([2,-20,0]) cube([20,40,wand_lower_height+10]);
     }
 
     //translate([0,0,wand_lower_height]) RodEnd(wand_middle_diameter,9);
@@ -138,7 +145,7 @@ module wand_handle() {
             rotate([0,90,0]) 
             battery_holder();
         
-        %translate([4.1,-4,holder_length+13.6]) rotate([90,0,90]) battery_switch();
+        %translate([4.1,-4,holder_length+29]) rotate([90,0,90]) battery_switch();
     } 
 
     // screw threads for the top
@@ -147,7 +154,7 @@ module wand_handle() {
         translate([0,0,wand_lower_height-20]) cylinder(h=40,r=wand_middle_diameter/4,$fn=roundness);
     }
 
-    // color("red") translate([4,-3.5,holder_length+3.7]) cube([5,7,12]);
+    
 }
 
 // cut out shape for the battery door
@@ -156,8 +163,8 @@ module handle_door_cuts() {
     thread_length=15;
 
     // main door
-    translate([0,-10,-thread_length]) {
-        cube([20,20,holder_length+thread_length]);
+    translate([0,-20,-thread_length]) {
+        cube([20,40,holder_length+thread_length]);
     }
     
     // notches to hold the handle
@@ -169,7 +176,7 @@ module handle_door_cuts() {
     translate([5,4,holder_length]) cube([2,1,20]);
 
     // door to button
-    doorToSwitch=20;
+    doorToSwitch=35;
     translate([5,-4,holder_length]) cube([switch_width+2,8,doorToSwitch]);
 
     // round opening for power button
