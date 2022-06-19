@@ -137,12 +137,14 @@ module wand_handle() {
             rotate([0,0,-90])
             prism(switch_width+1,10,27);
 
+        // extending the tracks on the side for the button to slide through
         translate([5,-5,holder_length+20]) cube([2,1,22]);
         translate([5,4,holder_length+20]) cube([2,1,22]);
 
+        // cut out channel from the battery door for wires
+        translate([5,-switch_width+5,holder_length]) cube([2,switch_width-2,30]);    
     }
 
-    //translate([0,0,wand_lower_height]) RodEnd(wand_middle_diameter,9);
     if (include_ghost) {
         %translate([-holder_height/2+1.5,-holder_width/2,2]) 
             rotate([0,90,0]) 
@@ -156,6 +158,9 @@ module wand_handle() {
         translate([0,0,wand_lower_height]) RodStart(wand_middle_diameter,0);
         translate([0,0,wand_lower_height-20]) cylinder(h=40,r=wand_middle_diameter/4,$fn=roundness);
     }
+
+    // color("red")
+    
 }
 
 // cut out shape for the battery door
@@ -243,12 +248,12 @@ if (render_upper_wand) {
 }
 
 
-intersection()
-{
-    difference() {
-        wand_handle();
-        handle_door_cuts();
-    }
+// intersection()
+// {
+//     difference() {
+//         wand_handle();
+//         handle_door_cuts();
+//     }
 
-    translate([-20,-20,holder_length-10]) cube([100,100,100]);
-}
+//     translate([-20,-20,holder_length-10]) cube([100,100,100]);
+// }
