@@ -130,12 +130,15 @@ module wand_handle() {
             cylinder(h=10,r=3, $fn=roundness);        
 
         // lower the shelf below the switch
-        translate([4,-4.5,holder_length+2]) cube([2,switch_width+1,40]); 
+        translate([2,-5,holder_length+2]) cube([3,switch_width+2,40]); 
 
         // ramp from the battery holder to the button
         translate([-5,(switch_width+1)/2,holder_length+2])
             rotate([0,0,-90])
             prism(switch_width+1,10,27);
+
+        translate([5,-5,holder_length+20]) cube([2,1,22]);
+        translate([5,4,holder_length+20]) cube([2,1,22]);
 
     }
 
@@ -154,7 +157,7 @@ module wand_handle() {
         translate([0,0,wand_lower_height-20]) cylinder(h=40,r=wand_middle_diameter/4,$fn=roundness);
     }
 
-    
+    // color("blue") translate([2,-5,holder_length+2]) cube([3,switch_width+2,40]); 
 }
 
 // cut out shape for the battery door
@@ -222,10 +225,6 @@ if (render_lower_wand) {
         wand_handle();
         handle_door_cuts();
     }
-
-    // color("blue") 
-    //     translate([9,0,wand_lower_height-20]) 
-    //     rotate(a=[0,-15,0]) cylinder(h=40,r=3, $fn=roundness);
 }
 
 // lower wand door
@@ -243,4 +242,15 @@ if (render_lower_wand_cap) {
 
 if (render_upper_wand) {
     upper_wand();
+}
+
+
+intersection()
+{
+    difference() {
+        wand_handle();
+        handle_door_cuts();
+    }
+
+    translate([-20,-20,holder_length-10]) cube([100,100,100]);
 }
