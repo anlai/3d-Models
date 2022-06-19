@@ -156,8 +156,6 @@ module wand_handle() {
         translate([0,0,wand_lower_height]) RodStart(wand_middle_diameter,0);
         translate([0,0,wand_lower_height-20]) cylinder(h=40,r=wand_middle_diameter/4,$fn=roundness);
     }
-
-    // color("blue") translate([2,-5,holder_length+2]) cube([3,switch_width+2,40]); 
 }
 
 // cut out shape for the battery door
