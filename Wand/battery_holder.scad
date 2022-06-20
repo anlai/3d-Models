@@ -121,7 +121,7 @@ module wand_handle() {
         // channel under the battery holder for wires
         translate([-7,-holder_width/2,2]) {
             cube([10,holder_width,10]);
-            cube([10,5,holder_length+5]);
+            cube([6,5,holder_length+5]);
         }
 
         // tunnel for wire from button to upper section
@@ -174,12 +174,12 @@ module handle_door_cuts() {
     }
     
     // notches to hold the handle
-    // translate([0,-8.25,holder_length-2]) cube([1.5,1.5,4]);
-    // translate([0,7,holder_length-2]) cube([1.5,1.5,4]);
+    translate([0,-8.25,holder_length-2]) cube([5,5.5,5]);
+    translate([0,7.3,holder_length-2]) cube([5,1.5,5]);
     
     // tracks for the battery door
-    translate([5,-5,holder_length]) cube([2,1,20]);
-    translate([5,4,holder_length]) cube([2,1,20]);
+    // translate([5,-5,holder_length]) cube([2,1,20]);
+    // translate([5,4,holder_length]) cube([2,1,20]);
 
     // door to button
     doorToSwitch=35;
@@ -189,6 +189,18 @@ module handle_door_cuts() {
     translate([8,0,holder_length+doorToSwitch-.5])
         rotate([0,90,0]) cylinder(r=3.4,h=2,$fn=50);
 
+}
+
+module handle_door() {
+    // main door based on cuts
+    intersection() {
+        wand_handle();
+        handle_door_cuts();
+    }
+
+    // supports for the door
+    translate([4,3,holder_length+25]) cube([1,1,4]);
+    translate([4,-4,holder_length+25]) cube([1,1,4]);
 }
 
 module lower_cap() {
@@ -232,10 +244,8 @@ if (render_lower_wand) {
 
 // lower wand door
 if (render_lower_wand_door) {
-    translate([20,0,0])
-    intersection() {
-        wand_handle();
-        handle_door_cuts();
+    translate([20,0,0]) {
+        handle_door();
     }
 }
 
@@ -248,12 +258,19 @@ if (render_upper_wand) {
 }
 
 
+intersection()
+{
+    difference() {
+        wand_handle();
+        handle_door_cuts();
+    }
+
+    translate([-20,-20,holder_length-15]) cube([100,100,100]);
+}
+
 // intersection()
 // {
-//     difference() {
-//         wand_handle();
-//         handle_door_cuts();
-//     }
+//     handle_door();
 
-//     translate([-20,-20,holder_length-10]) cube([100,100,100]);
+//     translate([-20,-20,holder_length-15]) cube([100,100,100]);
 // }
