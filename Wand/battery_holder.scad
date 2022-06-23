@@ -174,8 +174,8 @@ module handle_door_cuts() {
     }
     
     // notches to hold the handle
-    translate([0,-8.25,holder_length-2]) cube([5,5.5,5]);
-    translate([0,7.3,holder_length-2]) cube([5,1.5,5]);
+    translate([0,-7.85,holder_length]) cube([4.5,1.5,3]);
+    translate([0,7.4,holder_length]) cube([3.5,1,3]);
     
     // tracks for the battery door
     // translate([5,-5,holder_length]) cube([2,1,20]);
@@ -192,15 +192,27 @@ module handle_door_cuts() {
 }
 
 module handle_door() {
-    // main door based on cuts
-    intersection() {
-        wand_handle();
-        handle_door_cuts();
+
+    difference() {
+        // main door based on cuts
+        intersection() {
+            wand_handle();
+            handle_door_cuts();
+        }
+
+        // shave down the notches so they'll fit
+        // left
+        translate([4.5,-8.25,holder_length]) cube([.5,2,3]);
+        translate([0,-8.25,holder_length]) cube([4.5,.5,3]);
+
+        // right
+        translate([3.5,7.3,holder_length]) cube([.5,1.5,4]);
+        translate([0,8.3,holder_length]) cube([3.5,.5,4]);
     }
 
     // supports for the door
-    translate([4,3,holder_length+25]) cube([1,1,4]);
-    translate([4,-4,holder_length+25]) cube([1,1,4]);
+    translate([2,3,holder_length+23]) cube([3,1,6]);
+    translate([2,-4,holder_length+23]) cube([3,1,6]);
 }
 
 module lower_cap() {
