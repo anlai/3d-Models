@@ -202,17 +202,21 @@ module handle_door() {
 
         // shave down the notches so they'll fit
         // left
-        translate([4.5,-8.25,holder_length]) cube([.5,2,3]);
+        translate([4,-8.25,holder_length]) cube([.5,2,3]);
         translate([0,-8.25,holder_length]) cube([4.5,.5,3]);
 
         // right
-        translate([3.5,7.3,holder_length]) cube([.5,1.5,4]);
+        translate([3,7.3,holder_length]) cube([.5,1.5,4]);
         translate([0,8.3,holder_length]) cube([3.5,.5,4]);
     }
 
     // supports for the door
     translate([2,3,holder_length+23]) cube([3,1,6]);
     translate([2,-4,holder_length+23]) cube([3,1,6]);
+
+    // color("blue"){
+    //     translate([3.5,7.3,holder_length]) cube([.5,1.5,4]);
+    // }
 }
 
 module lower_cap() {
@@ -270,19 +274,19 @@ if (render_upper_wand) {
 }
 
 
-intersection()
-{
-    difference() {
-        wand_handle();
-        handle_door_cuts();
-    }
-
-    translate([-20,-20,holder_length-15]) cube([100,100,100]);
-}
-
 // intersection()
 // {
-//     handle_door();
+//     difference() {
+//         wand_handle();
+//         handle_door_cuts();
+//     }
 
 //     translate([-20,-20,holder_length-15]) cube([100,100,100]);
 // }
+
+intersection()
+{
+    handle_door();
+
+    translate([-20,-20,holder_length-15]) cube([100,100,100]);
+}
