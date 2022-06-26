@@ -131,7 +131,7 @@ module wand_handle() {
             cylinder(h=10,r=3, $fn=roundness);        
 
         // lower the shelf below the switch
-        translate([2.5,-5,holder_length+2]) cube([3,switch_width+2,40]); 
+        translate([3,-5,holder_length+2]) cube([3,switch_width+2,40]); 
 
         // ramp from the battery holder to the button
         translate([-5,(switch_width+1)/2,holder_length+2])
@@ -139,8 +139,8 @@ module wand_handle() {
             prism(switch_width+1,10,27);
 
         // extending the tracks on the side for the button to slide through
-        translate([5.5,-5,holder_length]) cube([2,1,45]);
-        translate([5.5,4,holder_length]) cube([2,1,45]);
+        translate([6,-5,holder_length]) cube([2,1,45]);
+        translate([6,4,holder_length]) cube([2,1,45]);
 
         // cut out channel from the battery door for wires
         translate([5,-switch_width+5,holder_length]) cube([2,switch_width-2,30]);    
@@ -218,8 +218,8 @@ module handle_door() {
     }
 
     // supports for the door
-    translate([2.5,3,holder_length+23]) cube([3,1,6]);
-    translate([2.5,-4,holder_length+23]) cube([3,1,6]);
+    translate([3,3,holder_length+23]) cube([3,1,6]);
+    translate([3,-4,holder_length+23]) cube([3,1,6]);
 }
 
 module lower_cap() {
