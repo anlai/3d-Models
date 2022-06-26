@@ -37,6 +37,7 @@ switch_button_base_diameter=7; // 6.8; // (actual measured dimensions)
 switch_button_base_height=2;
 switch_button_diameter=4.5;    // 4.3; // (actual measured dimensions)
 switch_button_height=2;
+switch_button_fudge=0;
 
 //measurements of the led
 led_light_diameter=6;
@@ -87,7 +88,7 @@ module battery_holder() {
 module battery_switch() {
     cube([switch_width,switch_length,switch_height]);
     translate([switch_width/2,switch_length/2,switch_height]){
-        cylinder(d=switch_button_base_diameter,h=switch_button_base_height,$fn=roundness);
+        cylinder(d=switch_button_base_diameter+switch_button_fudge,h=switch_button_base_height,$fn=roundness);
         translate([0,0,switch_button_base_height]) {
             cylinder(d=switch_button_diameter,h=switch_button_height,$fn=roundness);
         }
@@ -138,8 +139,8 @@ module wand_handle() {
             prism(switch_width+1,10,27);
 
         // extending the tracks on the side for the button to slide through
-        translate([5,-5,holder_length+20]) cube([2,1,22]);
-        translate([5,4,holder_length+20]) cube([2,1,22]);
+        translate([5,-5,holder_length]) cube([2,1,45]);
+        translate([5,4,holder_length]) cube([2,1,45]);
 
         // cut out channel from the battery door for wires
         translate([5,-switch_width+5,holder_length]) cube([2,switch_width-2,30]);    
@@ -208,15 +209,17 @@ module handle_door() {
         // right
         translate([3,7.3,holder_length]) cube([.5,1.5,4]);
         translate([0,8.3,holder_length]) cube([3.5,.5,4]);
+
+        // shave down the joining piece to the button
+        // left
+        translate([5,-4,holder_length]) cube([switch_width+2,.25,35]);
+        // right
+        translate([5,3.75,holder_length]) cube([switch_width+2,.25,35]);
     }
 
     // supports for the door
     translate([2,3,holder_length+23]) cube([3,1,6]);
     translate([2,-4,holder_length+23]) cube([3,1,6]);
-
-    // color("blue"){
-    //     translate([3.5,7.3,holder_length]) cube([.5,1.5,4]);
-    // }
 }
 
 module lower_cap() {
@@ -274,19 +277,19 @@ if (render_upper_wand) {
 }
 
 
-// intersection()
-// {
-//     difference() {
-//         wand_handle();
-//         handle_door_cuts();
-//     }
-
-//     translate([-20,-20,holder_length-15]) cube([100,100,100]);
-// }
-
 intersection()
 {
-    handle_door();
+    difference() {
+        wand_handle();
+        handle_door_cuts();
+    }
 
     translate([-20,-20,holder_length-15]) cube([100,100,100]);
 }
+
+// intersection()
+// {
+//     handle_door();
+
+//     translate([-20,-20,holder_length-15]) cube([100,100,100]);
+// }
