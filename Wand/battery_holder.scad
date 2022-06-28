@@ -67,8 +67,6 @@ module prism(l, w, h){
             points=[[0,0,0], [l,0,0], [l,w,0], [0,w,0], [0,w,h], [l,w,h]],
             faces=[[0,1,2,3],[5,4,3,2],[0,4,5,1],[0,3,4],[5,2,1]]
             );
-    
-
 }
 
 // shape of the battery holder to cut out
@@ -215,6 +213,9 @@ module handle_door() {
         translate([5,-4,holder_length]) cube([switch_width+2,.25,35]);
         // right
         translate([5,3.75,holder_length]) cube([switch_width+2,.25,35]);
+
+        // clearence for battery holder
+        translate([5,-5,holder_length+3.75]) cube([3,10,5]);
     }
 
     // supports for the door
@@ -277,15 +278,15 @@ if (render_upper_wand) {
 }
 
 
-intersection()
-{
-    difference() {
-        wand_handle();
-        handle_door_cuts();
-    }
+// intersection()
+// {
+//     difference() {
+//         wand_handle();
+//         handle_door_cuts();
+//     }
 
-    translate([-20,-20,holder_length-15]) cube([100,100,100]);
-}
+//     translate([-20,-20,holder_length-15]) cube([100,100,100]);
+// }
 
 // intersection()
 // {
